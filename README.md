@@ -2,6 +2,9 @@
 
 `iter` is a Go package that provides utility functions and types for working with iterators in Go (since go1.23).
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/goaux/iter.svg)](https://pkg.go.dev/github.com/goaux/iter)
+[![Go Report Card](https://goreportcard.com/badge/github.com/goaux/iter)](https://goreportcard.com/report/github.com/goaux/iter)
+
 Iterator utilities are provided in several packages, each of which serves a different purpose.
 
 Sub-packages:
