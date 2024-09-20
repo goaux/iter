@@ -271,3 +271,55 @@ func MapOut[S, T, U any](iterator iter.Seq[S], f func(S) (T, U)) iter.Seq2[T, U]
 		}
 	}
 }
+
+// SelectMap provides functionality that combines the functions of [Select] and [Map].
+func SelectMap[S, T any](iterator iter.Seq[S], f func(S) (T, bool)) iter.Seq[T] {
+	return func(yield func(T) bool) {
+		for s := range iterator {
+			if t, ok := f(s); ok {
+				if !yield(t) {
+					break
+				}
+			}
+		}
+	}
+}
+
+// SelectMap2 provides functionality that combines the functions of [Select2] and [Map2].
+func SelectMap2[S, T, U, V any](iterator iter.Seq2[S, T], f func(S, T) (U, V, bool)) iter.Seq2[U, V] {
+	return func(yield func(U, V) bool) {
+		for s, t := range iterator {
+			if u, v, ok := f(s, t); ok {
+				if !yield(u, v) {
+					break
+				}
+			}
+		}
+	}
+}
+
+// SelectMapIn provides functionality that combines the function of [Select2] and [MapIn].
+func SelectMapIn[S, T, U any](iterator iter.Seq2[S, T], f func(S, T) (U, bool)) iter.Seq[U] {
+	return func(yield func(U) bool) {
+		for s, t := range iterator {
+			if u, ok := f(s, t); ok {
+				if !yield(u) {
+					break
+				}
+			}
+		}
+	}
+}
+
+// SelectMapOut provides functionality that combines the function of [Select] and [MapOut].
+func SelectMapOut[S, T, U any](iterator iter.Seq[S], f func(S) (T, U, bool)) iter.Seq2[T, U] {
+	return func(yield func(T, U) bool) {
+		for s := range iterator {
+			if t, u, ok := f(s); ok {
+				if !yield(t, u) {
+					break
+				}
+			}
+		}
+	}
+}

@@ -364,3 +364,77 @@ func TestMapOut(t *testing.T) {
 		t.Error("must be equal")
 	}
 }
+
+func TestSelectMap(t *testing.T) {
+	ss := slices.Collect(transform.SelectMap(
+		slices.Values([]int{1, 2, 3, 4, 5, 6}),
+		func(i int) (string, bool) {
+			if i%2 == 0 {
+				return strconv.Itoa(i), true
+			}
+			return "", false
+		},
+	))
+	if len(ss) != 3 {
+		t.Error("len(ss) must be 3")
+	}
+	if !slices.Equal(ss, []string{"2", "4", "6"}) {
+		t.Error("must be equal")
+	}
+}
+
+func TestSelectMap2(t *testing.T) {
+	m := maps.Collect(transform.SelectMap2(
+		maps.All(map[int]string{1: "a", 2: "b", 3: "c"}),
+		func(i int, s string) (string, rune, bool) {
+			if i%2 == 1 {
+				return strconv.Itoa(i), []rune(s)[0], true
+			}
+			return "", 0, false
+		},
+	))
+	if len(m) != 2 {
+		t.Error("len(ss) must be 2")
+	}
+	if m["1"] != 'a' {
+		t.Error("must be a")
+	}
+	if m["3"] != 'c' {
+		t.Error("must be c")
+	}
+}
+
+func TestSelectMapIn(t *testing.T) {
+	type Pair struct {
+		I int
+		V string
+	}
+	s := slices.Collect(
+		transform.SelectMapIn(
+			slices.All([]string{"a", "b", "c"}),
+			func(i int, v string) (Pair, bool) { return Pair{I: i, V: v}, i%2 == 0 },
+		),
+	)
+	want := []Pair{{0, "a"}, {2, "c"}}
+	if !slices.Equal(s, want) {
+		t.Error("must be equal")
+	}
+
+}
+
+func TestSelectMapOut(t *testing.T) {
+	type Pair struct {
+		I int
+		V string
+	}
+	m := maps.Collect(
+		transform.SelectMapOut(
+			slices.Values([]Pair{{0, "a"}, {1, "b"}, {2, "c"}}),
+			func(i Pair) (int, string, bool) { return i.I, i.V, i.I%2 == 0 },
+		),
+	)
+	want := map[int]string{0: "a", 2: "c"}
+	if !maps.Equal(m, want) {
+		t.Error("must be equal")
+	}
+}
