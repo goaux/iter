@@ -1,0 +1,4 @@
+github.com/goaux/results v1.6.0 h1:jYi9C3RtP4PAK3xeJxoIuG7X6ddyn0bK0yhanfxV/2c=
+github.com/goaux/results v1.6.0/go.mod h1:SfCxQPedrX5L1dOcJp4Wa31UmDl225Q9qncdrlHHOYY=
+github.com/goaux/stacktrace v1.0.3 h1:KUIt4D6lTIpmyrVyhQtzYSvtDxN1tigNcH3xt1BSYzo=
+github.com/goaux/stacktrace v1.0.3/go.mod h1:JphATKwXM5g3x3y7mvb0zbxUJYzHlkMYuGPntIRW/LA=

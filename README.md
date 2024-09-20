@@ -12,6 +12,7 @@ Sub-packages:
 - `bufioreader` and `bufioscanner`, which offer convenient ways to iterate over buffered I/O operations.
 - `signals` provides iterators for the os.Signal event loop.
 - `ticker` provides iterators for the time.Ticker event loop.
+- `transform` provides functions transforming iterators.
 
 ## Sub-packages
 
@@ -141,4 +142,31 @@ for i, now := range ticker.Before(ctx, time.Second) {
         break
     }
 }
+```
+
+### transform
+
+The `transform` package provides functions transforming iterators.
+
+```go
+func Concat[T any](iterators ...iter.Seq[T]) iter.Seq[T]
+func Concat2[S, T any](iterators ...iter.Seq2[S, T]) iter.Seq2[S, T]
+func Keys[K, V any](iterator iter.Seq2[K, V]) iter.Seq[K]
+func Map[S, T any](iterator iter.Seq[S], f func(S) T) iter.Seq[T]
+func Map2[S, T, U, V any](iterator iter.Seq2[S, T], f func(S, T) (U, V)) iter.Seq2[U, V]
+func MapIn[S, T, U any](iterator iter.Seq2[S, T], f func(S, T) U) iter.Seq[U]
+func MapOut[S, T, U any](iterator iter.Seq[S], f func(S) (T, U)) iter.Seq2[T, U]
+func Resize[T any](iterator iter.Seq[T], size int) iter.Seq[T]
+func Resize2[S, T any](iterator iter.Seq2[S, T], size int) iter.Seq2[S, T]
+func Select[T any](iterator iter.Seq[T], f func(T) bool) iter.Seq[T]
+func Select2[K, V any](iterator iter.Seq2[K, V], f func(K, V) bool) iter.Seq2[K, V]
+func Skip[T any](iterator iter.Seq[T], skip int) iter.Seq[T]
+func Skip2[S, T any](iterator iter.Seq2[S, T], skip int) iter.Seq2[S, T]
+func Swap[S, T any](iterator iter.Seq2[S, T]) iter.Seq2[T, S]
+func Values[K, V any](iterator iter.Seq2[K, V]) iter.Seq[V]
+func Zip[S, T any](lhs iter.Seq[S], rhs iter.Seq[T]) iter.Seq2[S, T]
+func ZipAll[S, T any](lhs iter.Seq[S], rhs iter.Seq[T]) iter.Seq2[S, T]
+func ZipIndex[T any](iterator iter.Seq[T]) iter.Seq2[int, T]
+func ZipLeft[S, T any](lhs iter.Seq[S], rhs iter.Seq[T]) iter.Seq2[S, T]
+func ZipRight[S, T any](lhs iter.Seq[S], rhs iter.Seq[T]) iter.Seq2[S, T]
 ```
